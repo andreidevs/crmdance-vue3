@@ -12,7 +12,9 @@
           <label for="username">Пароль</label>
         </span>
         <div class="mt-4">
-          <Button class="w-full" @click="handleSubmit">Зарегистрироваться</Button>
+          <Button class="w-full" @click="handleSubmit" :loading="userStore.loadingUser"
+            >Зарегистрироваться</Button
+          >
         </div></template
       >
     </Card>

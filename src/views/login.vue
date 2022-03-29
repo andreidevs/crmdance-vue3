@@ -1,10 +1,42 @@
 <template>
-  <Button type="submit" label="Submit" class="mt-2" />
-  <h2 class="text-3xl ml-4 mt-2 font-bold underline">Helllo</h2>
+  <div class="flex flex-col justify-center items-center h-screen">
+    <Card>
+      <template #title> Вход </template>
+      <template #content>
+        <span class="p-float-label">
+          <InputText id="username" type="text" v-model.trim="email" />
+          <label for="username">Email</label>
+        </span>
+        <span class="p-float-label mt-6">
+          <Password v-model.trim="password" :feedback="false" />
+          <label for="username">Пароль</label>
+        </span>
+        <div class="mt-4">
+          <Button class="w-full" @click="handleSubmit">Войти</Button>
+        </div></template
+      >
+    </Card>
+  </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { ref } from "vue";
+import { useUserStore } from "../store/user";
+// import { useToast } from "primevue/usetoast";
+
+// const toast = useToast();
+const userStore = useUserStore();
+
+const email = ref("");
+const password = ref("");
+
+const handleSubmit = async () => {
+  if (!email.value || password.value.length < 6) {
+    // toast.add({ severity: "warn", summary: "Проверьте даннеы", life: 3000 });
+    return;
+  }
+  await userStore.loginUser(email.value, password.value);
+};
 </script>
 
 <style></style>

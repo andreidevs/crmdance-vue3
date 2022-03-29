@@ -12,6 +12,8 @@ import Password from "primevue/password";
 import Divider from "primevue/divider";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
+import Card from "primevue/card";
+import Toast from "primevue/toast";
 
 const app = createApp(App);
 
@@ -30,13 +32,16 @@ app.component("Button", Button);
 
 app.component("InputText", InputText);
 
-app.component("Password ", Password);
+app.component("Password", Password);
 
-app.component("Divider ", Divider);
+app.component("Divider", Divider);
 
-app.component("Calendar ", Calendar);
+app.component("Calendar", Calendar);
 
 app.component("Dropdown", Dropdown);
+
+app.component("Card", Card);
+app.component("Toast", Toast);
 
 // import Divider from "primevue/password";
 // app.component("Divider ", Divider);

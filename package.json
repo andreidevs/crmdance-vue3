@@ -10,8 +10,6 @@
   "dependencies": {
     "firebase": "^9.6.10",
     "pinia": "^2.0.12",
-    "primeicons": "^5.0.0",
-    "primevue": "^3.12.2",
     "vue": "^3.2.31",
     "vue-router": "^4.0.13",
     "vuex": "^4.0.2"

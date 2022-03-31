@@ -14,6 +14,8 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Card from "primevue/card";
 import Toast from "primevue/toast";
+import Menubar from "primevue/menubar";
+import Megamenu from "primevue/megamenu";
 
 const app = createApp(App);
 
@@ -41,18 +43,14 @@ app.component("Calendar", Calendar);
 app.component("Dropdown", Dropdown);
 
 app.component("Card", Card);
+
 app.component("Toast", Toast);
 
-// import Divider from "primevue/password";
-// app.component("Divider ", Divider);
+app.component("Menubar", Menubar);
 
-// import Divider from "primevue/password";
-// app.component("Divider ", Divider);
+app.component("MegaMenu", Megamenu);
 
-// import Divider from "primevue/password";
-// app.component("Divider ", Divider);
 
-// import Divider from "primevue/password";
-// app.component("Divider ", Divider);
+
 
 app.mount("#app");

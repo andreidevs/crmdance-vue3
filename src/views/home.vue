@@ -1,40 +1,46 @@
-<template>
-  <MegaMenu class="ml-4 mt-4" :model="itemsMenu" orientation="vertical" />
-</template>
+<template></template>
 
-<script setup>
-import { useGroupsStore } from "../store/groups";
-import { useUserStore } from "../store/user";
-import { reactive, ref } from "vue";
+<script>
+// import { useGroupsStore } from "../store/groups";
+// import { useUserStore } from "../store/user";
+// import { reactive, ref } from "vue";
 
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
-const logout = async () => {
-  await userStore.logoutUser();
-};
+// const logout = async () => {
+//   await userStore.logoutUser();
+// };
 
-const itemsMenu = [
-  {
-    label: "Группы",
-    icon: "pi pi-fw pi-clone",
-    to: "groups",
-  },
-  {
-    label: "Ученики",
-    icon: "pi pi-fw pi-users",
-    to: "students",
-  },
-  {
-    label: "Ежедневный отчет",
-    icon: "pi pi-fw pi-check-square",
-    to: "daily",
-  },
-  {
-    label: "Статистика",
-    icon: "pi pi-fw pi-chart-bar",
-    to: "statistic",
-  },
-];
+// const itemsMenu = [
+//   {
+//     label: "Группы",
+//     icon: "pi pi-fw pi-clone",
+//     to: "groups",
+//   },
+//   {
+//     label: "Ученики",
+//     icon: "pi pi-fw pi-users",
+//     to: "students",
+//   },
+//   {
+//     label: "Ежедневный отчет",
+//     icon: "pi pi-fw pi-check-square",
+//     to: "daily",
+//   },
+//   {
+//     label: "Статистика",
+//     icon: "pi pi-fw pi-chart-bar",
+//     to: "statistic",
+//   },
+// ];
+
+// export default {
+//   created() {
+//     this.$vaToast.init({ message: "Роут не существует", color: "warning" });
+//     this.$vaToast.init({ message: "Роут не существует", color: "warning" });
+//     this.$vaToast.init({ message: "Роут не существует", color: "warning" });
+//   },
+// };
 </script>
 
 <style></style>

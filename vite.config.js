@@ -1,15 +1,19 @@
-import { fileURLToPath, URL } from "url";
-
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
-
+import { defineConfig } from 'vite'
+import path from 'path'
+import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueJsx()],
+  plugins: [vue()],
+
   resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    alias: [
+      { find: /^~(.*)$/, replacement: '$1' },
+      {
+        find: /@\/.+/,
+        replacement: (val) => {
+          return val.replace(/^@/, path.resolve(__dirname, "./src/"));
+        },
+      }
+    ],
   },
-});
+})

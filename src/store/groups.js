@@ -1,9 +1,8 @@
 import router from "../router";
 import { defineStore } from "pinia";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { SetDoc } from "../firebase/simpleFire"
 
-const groupsCollection = collection(db, "groups")
+const N = "groups"
 
 export const useGroupsStore = defineStore("groupsStore", {
 
@@ -13,20 +12,11 @@ export const useGroupsStore = defineStore("groupsStore", {
     loadingSession: false,
   }),
   actions: {
-    async addTestData(value) {
-
-      try {
-
-        const docRef = await addDoc(groupsCollection, value);
-        console.log("Document written with ID: ", docRef.id);
-
-
-      } catch (error) {
-        console.log(error);
-      } finally {
-
-      }
+    async createGroup(model) {
+      SetDoc(N, model)
     },
+
+
 
   },
 });

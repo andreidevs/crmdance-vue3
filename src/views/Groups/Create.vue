@@ -71,7 +71,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button>Создать</el-button>
+        <el-button @click="createGroup">Создать</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -79,6 +79,7 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useGroupsStore } from "../../store/groups";
 
 const form = reactive({
   coach: "",
@@ -88,12 +89,16 @@ const form = reactive({
   type: "",
   weekdays: [],
 });
-
-const typeOptions = ref([]);
+const groupStore = useGroupsStore();
+const typeOptions = ref([{ title: "Тип 1", value: "type1" }]);
 const coachList = ref([]);
 const weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
 
 const openType = () => {};
+
+const createGroup = () => {
+  groupStore.createGroup(form);
+};
 </script>
 
 <style></style>

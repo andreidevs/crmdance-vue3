@@ -20,7 +20,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="name">
-          <el-input v-model="model.name" placeholder="Фио"></el-input>
+          <el-input v-model="model.name" placeholder="Фио" clearable></el-input>
+        </el-form-item>
+        <el-form-item prop="phone">
+          <el-input v-model="model.phone" placeholder="Телефон" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -48,6 +51,7 @@ let model = reactive({
   email: "",
   password: "",
   name: "",
+  phone: "",
 });
 
 const loading = ref(false);

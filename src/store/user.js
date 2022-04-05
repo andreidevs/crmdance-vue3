@@ -7,6 +7,9 @@ import {
   signOut,
   updateProfile
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+
 import { auth } from "../firebase/firebaseConfig";
 import router from "../router";
 
@@ -18,7 +21,7 @@ export const useUserStore = defineStore("userStore", {
     loadingSession: false,
   }),
   actions: {
-    async registerUser({ email, password, name: displayName }) {
+    async registerUser({ email, password, name: displayName, phone }) {
       this.loadingUser = true;
       try {
         const { user } = await createUserWithEmailAndPassword(
@@ -30,10 +33,17 @@ export const useUserStore = defineStore("userStore", {
         updateProfile(user, {
           displayName
         })
-        console.log('User', user)
+
+        setDoc(doc(db, "coach", user.uid), {
+          uid: user.uid,
+          name: displayName,
+          phone,
+          email,
+        });
+
         this.userData = { email: user.email, uid: user.uid, name: displayName };
-        ElMessage.success("Регистрация успешна");
-        router.push("/");
+
+        // router.push("/");
       } catch (error) {
         console.log(error);
         ElMessage.error("Ошибка");
@@ -51,7 +61,7 @@ export const useUserStore = defineStore("userStore", {
         );
         this.userData = { email: user.email, uid: user.uid, name: user.displayName };
         ElMessage.success("Успешный вход в систему");
-        router.push("/");
+        // router.push("/");
       } catch (error) {
         ElMessage.error("Ошибка");
         console.log(error);

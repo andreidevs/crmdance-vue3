@@ -39,7 +39,7 @@
 import { reactive, ref } from "vue";
 import { useUserStore } from "../store/user";
 import { ElMessage } from "element-plus";
-
+import { ElNotification } from "element-plus";
 const userStore = useUserStore();
 
 let model = reactive({
@@ -74,6 +74,11 @@ const login = async (form) => {
     if (valid) {
       await userStore.loginUser(model);
       ElMessage.success("Успешный вход в систему");
+      ElNotification({
+        title: "Усшено",
+        message: "Вы вошли в систему",
+        type: "success",
+      });
     } else {
       ElMessage.error("Проверьте правильность ввденных данных");
     }

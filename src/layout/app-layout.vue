@@ -1,11 +1,12 @@
 <template>
-  <div class="app-layout">
-    <sidebar />
-  </div>
-
-  <div class="content_wrapper">
-    <router-view />
-  </div>
+  <el-aside>
+    <div class="app-layout">
+      <sidebar /></div
+  ></el-aside>
+  <el-container>
+    <div class="content_wrapper">
+      <router-view /></div
+  ></el-container>
 </template>
 
 <script setup>
@@ -20,7 +21,7 @@ import Sidebar from "@/components/sidebar/index.vue";
 .content_wrapper {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-left: 300px;
+  padding-left: 200px;
   padding-top: 30px;
 }
 </style>

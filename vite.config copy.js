@@ -12,13 +12,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${pathSrc}/`,
-      '@': path.resolve(__dirname, './src'),
     },
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "~/assets/scss/element/index.scss" as *;`,
+        additionalData: `@use "~/styles/element/index.scss" as *;`,
       },
     },
   },

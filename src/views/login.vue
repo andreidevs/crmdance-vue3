@@ -1,43 +1,83 @@
 <template>
   <div class="flex flex-col justify-center items-center h-screen">
-    <Card>
-      <template #title> Вход </template>
-      <template #content>
-        <span class="p-float-label">
-          <InputText id="username" type="text" v-model.trim="email" />
-          <label for="username">Email</label>
-        </span>
-        <span class="p-float-label mt-6">
-          <Password v-model.trim="password" :feedback="false" />
-          <label for="username">Пароль</label>
-        </span>
-        <div class="mt-4">
-          <Button class="w-full" @click="handleSubmit" :loading="userStore.loadingUser"
-            >Войти</Button
-          >
-        </div></template
+    <el-card label-width="140px">
+      <h2>Авторизация</h2>
+      <el-form
+        class="login-form"
+        :model="model"
+        :rules="rules"
+        ref="form"
+        @submit.prevent="login(form)"
       >
-    </Card>
+        <el-form-item prop="email">
+          <el-input v-model="model.email" placeholder="Email"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="model.password"
+            placeholder="Пароль"
+            type="password"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button
+            :loading="loading"
+            class="login-button"
+            type="primary"
+            native-type="submit"
+            block
+            >Войти</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { useUserStore } from "../store/user";
-// import { useToast } from "primevue/usetoast";
+import { ElMessage } from "element-plus";
 
-// const toast = useToast();
 const userStore = useUserStore();
 
-const email = ref("");
-const password = ref("");
+let model = reactive({
+  email: "",
+  password: "",
+});
 
-const handleSubmit = async () => {
-  if (!email.value || password.value.length < 6) {
-    // toast.add({ severity: "warn", summary: "Проверьте даннеы", life: 3000 });
-    return;
-  }
-  await userStore.loginUser(email.value, password.value);
+const loading = ref(false);
+const form = ref();
+
+const rules = reactive({
+  email: [
+    {
+      required: true,
+      message: "Email is required",
+      trigger: "blur",
+    },
+  ],
+  password: [
+    { required: true, message: "Password is required", trigger: "blur" },
+    {
+      min: 5,
+      message: "Password length should be at least 5 characters",
+      trigger: "blur",
+    },
+  ],
+});
+
+const login = async (form) => {
+  if (!form) return;
+  await form.validate(async (valid, fields) => {
+    if (valid) {
+      await userStore.loginUser(model);
+      ElMessage.success("Успешный вход в систему");
+    } else {
+      ElMessage.error("Проверьте правильность ввденных данных");
+    }
+  });
 };
 </script>
 

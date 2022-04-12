@@ -37,10 +37,10 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useUserStore } from "../store/user";
+import { useAuthStore } from "../stores/auth";
 import { ElMessage } from "element-plus";
 import { ElNotification } from "element-plus";
-const userStore = useUserStore();
+const userStore = useAuthStore();
 
 let model = reactive({
   email: "",
@@ -72,7 +72,7 @@ const login = async (form) => {
   if (!form) return;
   await form.validate(async (valid, fields) => {
     if (valid) {
-      await userStore.loginUser(model);
+      await userStore.login(model);
       ElMessage.success("Успешный вход в систему");
       ElNotification({
         title: "Усшено",

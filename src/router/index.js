@@ -1,18 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useUserStore } from "../store/user";
-
-const requireAuth = async (to, from, next) => {
-  const userStore = useUserStore();
-  userStore.loadingSession = true;
-  const user = await userStore.currentUser();
-  if (user) {
-    next();
-  } else {
-    next("/login");
-  }
-  userStore.loadingSession = false;
-};
-
+import { authGuard } from '@/guards/auth';
 import AuthLayout from '@/layout/auth-layout.vue'
 import AppLayout from '@/layout/app-layout.vue'
 
@@ -30,25 +17,25 @@ const routes = [
       {
         path: "/",
         name: "home",
-        beforeEnter: requireAuth,
+        meta: { authRequired: true },
         component: () => import("../views/Home.vue"),
       },
       {
         path: "/groups",
         name: "groups",
-        beforeEnter: requireAuth,
+        meta: { authRequired: true },
         component: () => import("../views/Groups/index.vue"),
       },
       {
         path: "/groups/create",
         name: "groups_create",
-        beforeEnter: requireAuth,
+        meta: { authRequired: true },
         component: () => import("../views/Groups/Create.vue"),
       },
       {
         path: "/students",
         name: "students",
-        beforeEnter: requireAuth,
+        meta: { authRequired: true },
         component: () => import("../views/Students.vue"),
       },
     ]
@@ -76,5 +63,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(authGuard);
 
 export default router;

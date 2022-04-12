@@ -7,7 +7,7 @@
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const pushRoute = (name) => {
+const pushRoute = async (name) => {
   router.push({ name });
 };
 </script>

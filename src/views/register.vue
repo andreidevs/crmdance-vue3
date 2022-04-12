@@ -42,10 +42,10 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useUserStore } from "../store/user";
+import { useAuthStore } from "../stores/auth";
 import { ElMessage } from "element-plus";
 
-const userStore = useUserStore();
+const userStore = useAuthStore();
 
 let model = reactive({
   email: "",
@@ -91,7 +91,8 @@ const register = async (form) => {
   if (!form) return;
   await form.validate(async (valid, fields) => {
     if (valid) {
-      await userStore.registerUser(model);
+      const { email, password, name, phone } = model;
+      await userStore.register({ email, password }, { name, phone });
       ElMessage.success("Регистрация успешна");
     } else {
       ElMessage.error("Проверьте правильность ввденных данных");

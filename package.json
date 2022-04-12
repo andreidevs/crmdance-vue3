@@ -8,6 +8,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.33.3",
     "element-plus": "^2.1.8",
     "firebase": "^9.6.10",
     "path": "^0.12.7",

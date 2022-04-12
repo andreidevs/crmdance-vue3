@@ -15,7 +15,7 @@
 
 <script setup>
 import MainTable from "../../components/MainTable/index.vue";
-import { useGroupsStore } from "../../store/groups";
+import { useGroupsStore } from "../../stores/groups";
 import { onMounted, reactive, ref } from "vue";
 const groupStore = useGroupsStore();
 
@@ -37,17 +37,19 @@ let tableColumns = [
 ];
 const getGroups = async () => {
   groupsData = await groupStore.getGroups();
-  console.log("groupsData", groupsData);
+  // console.log("groupsData", groupsData);
 };
 
 const getNextGroup = async () => {
-  groupsData = await groupStore.getGroupsNext();
   console.log("groupsData", groupsData);
 };
 const getPrevGroup = async () => {
-  groupsData = await groupStore.getGroupsPrev();
   console.log("groupsData", groupsData);
 };
+
+onMounted(() => {
+  groupStore.getGroupById(1);
+});
 </script>
 
 <style></style>

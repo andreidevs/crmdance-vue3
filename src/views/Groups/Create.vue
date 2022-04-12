@@ -79,7 +79,7 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useGroupsStore } from "../../store/groups";
+import { useGroupsStore } from "../../stores/groups";
 
 const form = reactive({
   coach: "",

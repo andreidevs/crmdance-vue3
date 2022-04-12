@@ -60,7 +60,6 @@ export const useUserStore = defineStore("userStore", {
           password
         );
         this.userData = { email: user.email, uid: user.uid, name: user.displayName };
-        ElMessage.success("Успешный вход в систему");
         // router.push("/");
       } catch (error) {
         ElMessage.error("Ошибка");
@@ -89,7 +88,7 @@ export const useUserStore = defineStore("userStore", {
                 uid: user.uid,
                 name: user.displayName
               };
-              console.log('User', this.userData)
+              // console.log('User', this.userData)
             } else {
               this.userData = null;
             }

@@ -1,7 +1,7 @@
 import {
   collection, doc, setDoc, addDoc,
   updateDoc, deleteDoc, getDoc, getDocs,
-  query, where
+  query, where, startAt, startAfter, endAt, endBefore, orderBy, limitToLast, limit, Timestamp
 } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
@@ -19,8 +19,9 @@ export const SetDoc = async (collectionName = null, data = null, id = null, mess
     }
     const dbCollection = collection(db, collectionName)
     let docRef = null
-    if (id) docRef = await setDoc(dbCollection, data);
-    else docRef = await addDoc(dbCollection, data);
+    let d = { ...data, created: Timestamp.fromDate(new Date()) }
+    if (id) docRef = await setDoc(dbCollection, d, id);
+    else docRef = await addDoc(dbCollection, d);
 
 
     ElMessage.success(messageSuccess);
@@ -134,5 +135,55 @@ export const GetDocs = async (collectionName = null, where = null) => {
     ElMessage.error("Ошибка получения");
   }
 }
+
+export const GetDocsPaginate =
+  async (collectionName = null, pageSize = 20, prev = null, next = null, order = 'created', where = null,) => {
+    try {
+
+      if (!collectionName) {
+        ElMessage.error("Добавьте название коллекции (collectionName)!");
+        return
+      }
+      if (!order) {
+        ElMessage.error("Сортируемое поля обязательно (order)!");
+        return
+      }
+      if (where && where.length < 3) {
+        ElMessage.error("WHERE должен быть массивом из 3 элементов!");
+        return
+      }
+
+      const ref = collection(db, collectionName);
+
+      let q
+
+      if (!next && !prev)
+        q = query(ref, orderBy(order), limit(pageSize));
+
+      if (next) q = query(ref, orderBy(order), startAfter(next[order]), limit(pageSize))
+
+      if (prev) q = query(ref, orderBy(order), endBefore(prev[order]), limit(pageSize))
+
+
+
+
+      const documentSnapshots = await getDocs(q);
+
+      let res = []
+
+      documentSnapshots.forEach(async (doc) => {
+
+        res.push(doc.data())
+      });
+
+      return res
+
+
+
+    } catch (error) {
+      console.error(error, `Коллекция: ${collectionName}, Where: ${where}`);
+      ElMessage.error("Ошибка получения");
+    }
+  }
 
 

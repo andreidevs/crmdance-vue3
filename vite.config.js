@@ -23,7 +23,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({ reactivityTransform: true }),
     Components({
       // allow auto load markdown components under `./src/components/`
       extensions: ['vue', 'md'],

@@ -4,11 +4,11 @@
       >Создать</el-button
     >
     <MainTable
-      @next="getNextGroup"
-      @prev="getPrevGroup"
-      @start="getGroups"
       :columns="tableColumns"
-      :tableData="groupsData"
+      :data="groupsData"
+      :getData="getGroups"
+      :nextData="getNextGroup"
+      :prevData="getPrevGroup"
     />
   </div>
 </template>
@@ -19,7 +19,7 @@ import { useGroupsStore } from "../../stores/groups";
 import { onMounted, reactive, ref } from "vue";
 const groupStore = useGroupsStore();
 
-let groupsData = $ref([]);
+let groupsData = ref([]);
 
 let tableColumns = [
   {
@@ -36,20 +36,19 @@ let tableColumns = [
   },
 ];
 const getGroups = async () => {
-  groupsData = await groupStore.getGroups();
-  // console.log("groupsData", groupsData);
+  const res = await groupStore.getGroups();
+  groupsData.value = res;
+  console.log("groupsData", res);
 };
 
 const getNextGroup = async () => {
-  console.log("groupsData", groupsData);
+  groupStore.page += 1;
+  await getGroups();
 };
 const getPrevGroup = async () => {
-  console.log("groupsData", groupsData);
+  groupStore.page -= 1;
+  await getGroups();
 };
-
-onMounted(() => {
-  groupStore.getGroupById(1);
-});
 </script>
 
 <style></style>

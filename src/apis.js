@@ -2,80 +2,37 @@
 
 import { ElMessage } from "element-plus";
 import { supabase } from "@/supabase";
+import { getPagination } from "./utils";
 
 
-export const setDoc = async (tableName = null, data = null, id = null, messageSuccess = "Успешно добавлено",) => {
+export const addData = async ({ tableName = null, data: addData = null, messageSuccess = "Успешно добавлено", }) => {
   try {
-    if (!collectionName) {
+    if (!tableName) {
       ElMessage.error("Добавьте название коллекции (collectionName)!");
       return
     }
-    if (!data) {
+    if (!addData) {
       ElMessage.error("Поле data не может быть пустым!");
       return
     }
 
     const { data, error } = await supabase
       .from(tableName)
-      .select()
+      .insert(addData, { upsert: true })
 
+    if (error) throw error
 
     ElMessage.success(messageSuccess);
-    return docRef
-  } catch (error) {
-    console.error(error);
-    ElMessage.error("Ошибка добавления!");
+    return data
   }
+  catch (error) {
+    ElMessage.error(`ОШИБКА!! ${error.message}`);
+  }
+
 }
 
-// export const updateDoc = async (collectionName = null, data = null, id = null, messageSuccess = "Успешно обновленно",) => {
-//   try {
-//     if (!collectionName) {
-//       ElMessage.error("Добавьте название коллекции (collectionName)!");
-//       return
-//     }
-//     if (!data) {
-//       ElMessage.error("Поле data не может быть пустым!");
-//       return
-//     }
-//     if (!id) {
-//       ElMessage.error("ID не может быть пустым!");
-//       return
-//     }
 
-//     const docRef = doc(db, collectionName, id)
-
-//     const newDoc = await updateDoc(docRef, data)
-
-//     ElMessage.success(messageSuccess);
-//     return newDoc
-//   } catch (error) {
-//     console.error(`Коллекция: ${collectionName}, Документ: ${id} Ошибка обновления! \n`, error);
-//     ElMessage.error(`Коллекция: ${collectionName}, Документ: ${id} Ошибка обновления!`);
-//   }
-// }
-
-// export const deleteDoc = async (collectionName = null, data = null, id = null, messageSuccess = "Успешно удалено",) => {
-//   try {
-//     if (!collectionName) {
-//       ElMessage.error("Добавьте название коллекции (collectionName)!");
-//       return
-//     }
-
-//     if (!id) {
-//       ElMessage.error("ID не может быть пустым!");
-//       return
-//     }
-//     await deleteDoc(doc(db, collectionName, id));
-
-//     ElMessage.success(messageSuccess);
-//     return
-//   } catch (error) {
-//     console.error(error);
-//     ElMessage.error("Ошибка удаления!");
-//   }
-// }
-export const getById = async (tableName = null, id = null,) => {
+export const getById = async ({ tableName = null, id = null }) => {
   try {
     if (!tableName) {
       ElMessage.error("Добавьте название коллекции (tableName)!");
@@ -86,21 +43,62 @@ export const getById = async (tableName = null, id = null,) => {
       ElMessage.error("ID не может быть пустым!");
       return
     }
-
+    const { from, to } = getPagination(page, 10);
     const { data, error } = await supabase
       .from(tableName)
       .select('*, coach(*), type(*) ')
 
-
+      .range(from, to);
 
     console.log("getById", data)
 
-
+    if (error) throw error
     return data
-  } catch (error) {
-    console.error(error);
-    ElMessage.error("Ошибка получения");
+
   }
+  catch (error) {
+    ElMessage.error(`ОШИБКА!! ${error.message}`);
+  }
+}
+export const getTable = async ({ tableName = null, select = "*", pagination = false, page = 1, size = 10 }) => {
+  try {
+    if (!tableName) {
+      ElMessage.error("Добавьте название коллекции (tableName)!");
+      return
+    }
+    if (page === 0) {
+      ElMessage.error("Page не может быть 0!");
+      return
+    }
+
+    if (pagination) {
+
+      const { from, to } = getPagination(page - 1, size);
+
+      const { data, error, count } = await supabase.from(tableName)
+        .select(select, { count: "exact" })
+        .order("id", { ascending: true })
+        .range(from, to);
+
+      const pages = (count + size - 1) / size;
+      const next = pages !== page
+      const prev = page !== 1
+      if (error) throw error
+
+      return { data, count, next, prev }
+
+    } else {
+      const { data, error, count } = await supabase.from(tableName)
+        .select(select, { count: "exact" })
+        .order("id", { ascending: true })
+      if (error) throw error
+      return { data, count }
+    }
+  }
+  catch (error) {
+    ElMessage.error(`ОШИБКА!! ${error.message}`);
+  }
+
 }
 
 // export const getDocs = async (collectionName = null, where = null) => {

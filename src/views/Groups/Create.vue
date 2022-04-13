@@ -45,9 +45,9 @@
         <el-select v-model="form.coach" clearable class="m-2" placeholder="Тренер">
           <el-option
             v-for="item in coachList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
@@ -64,9 +64,9 @@
         >
           <el-option
             v-for="item in typeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.ConvertInvalidComponents"
+            :label="item.title"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useGroupsStore } from "../../stores/groups";
 
 const form = reactive({
@@ -90,11 +90,14 @@ const form = reactive({
   weekdays: [],
 });
 const groupStore = useGroupsStore();
-const typeOptions = ref([{ title: "Тип 1", value: "type1" }]);
+const typeOptions = ref([]);
 const coachList = ref([]);
 const weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
 
-const openType = () => {};
+onMounted(async () => {
+  typeOptions.value = (await groupStore.getGroupTypes()).data;
+  coachList.value = (await groupStore.getCoachList()).data;
+});
 
 const createGroup = () => {
   groupStore.createGroup(form);

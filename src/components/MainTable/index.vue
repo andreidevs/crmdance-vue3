@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" stripe style="width: 100%">
+  <el-table v-loading="loading" :data="data.data" stripe style="width: 100%">
     <el-table-column
       v-for="(item, index) in columns"
       :key="index"
@@ -9,44 +9,45 @@
     />
   </el-table>
   <el-button-group>
-    <el-button @click="prev" type="primary" :icon="ArrowLeft"
+    <el-button :disabled="!data.prev" @click="prev" type="primary" :icon="ArrowLeft"
       >Предыдущая страница</el-button
     >
-    <el-button @click="next" type="primary">
+    <el-button :disabled="!data.next" @click="next" type="primary">
       Следующаяя страница <el-icon class="el-icon--right"><ArrowRight /></el-icon>
     </el-button>
   </el-button-group>
 </template>
 
-<script setup>
+<script setup async>
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
-import { toRefs, onMounted, watch, computed } from "vue";
+import { toRefs, onMounted, ref } from "vue";
 
-const emit = defineEmits(["next", "prev", "start"]);
 const props = defineProps({
   columns: Array,
-  tableData: Array,
+  data: Object,
+  getData: Function,
+  nextData: Function,
+  prevData: Function,
 });
+const loading = ref(false);
 
-let { tableData } = toRefs(props);
-
-onMounted(() => {
-  emit("start");
-});
-
-const next = () => {
-  emit("next");
-  setTimeout(() => {
-    console.log("dtaa", tableData);
-  }, 1000);
+const next = async () => {
+  loading.value = true;
+  await props.nextData();
+  loading.value = false;
 };
 
-const prev = () => {
-  emit("prev");
-  // setTimeout(() => {
-  //   console.log("dtaa", props);
-  // }, 1000);
+const prev = async () => {
+  loading.value = true;
+  await props.prevData();
+  loading.value = false;
 };
+
+onMounted(async () => {
+  loading.value = true;
+  await props.getData();
+  loading.value = false;
+});
 </script>
 
 <style></style>

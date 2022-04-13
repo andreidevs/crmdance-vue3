@@ -1,7 +1,6 @@
 
 import { defineStore } from "pinia";
-import { GetDocsPaginate, SetDoc } from "../firebase/simpleFire"
-import { getById } from '../apis'
+import { getById, getTable, addData } from '../apis'
 const N = "groups"
 
 export const useGroupsStore = defineStore("groupsStore", {
@@ -9,39 +8,31 @@ export const useGroupsStore = defineStore("groupsStore", {
   state: () => ({
     groupsList: [],
     last: {},
-    first: {}
+    first: {},
+    page: 1
   }),
 
   actions: {
-    async createGroup(model) {
-      return await SetDoc(N, model,)
+    async createGroup(data) {
+      return await addData({ tableName: N, data, })
     },
 
     async getGroups() {
-      const res = await GetDocsPaginate(N, 5)
-      this.last = res[res.length - 1]
-
-      return res
+      return await getTable({ tableName: N, select: "*, coach(*), type(*)", pagination: true, page: this.page })
     },
 
     async getGroupById(id) {
-      return await getById(N, id)
+      return await getById({ tableNAme: N, id })
     },
-    // async getGroupsNext() {
 
-    //   const res = await GetDocsPaginate(N, 5, null, this.last)
-    //   this.last = res[res.length - 1]
-    //   this.first = res[0]
-    //   console.log('resNext', res)
-    //   return res
-    // },
-    // async getGroupsPrev() {
-    //   const res = await GetDocsPaginate(N, 5, this.first, null)
-    //   this.last = res[res.length - 1]
-    //   this.first = res[0]
-    //   console.log('resPrev', res)
-    //   return res
-    // },
+    async getCoachList() {
+      return getTable({ tableName: "users" })
+    },
+
+    async getGroupTypes() {
+      return getTable({ tableName: "groupTypes" })
+    }
+
 
 
 

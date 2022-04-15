@@ -23,16 +23,29 @@ let groupsData = ref([]);
 
 let tableColumns = [
   {
+    type: "index",
+  },
+  {
+    type: "selection",
+  },
+  {
     label: "Название",
     prop: "title",
+    sortable: true,
+    dataView: "title",
   },
   {
     label: "Время",
     prop: "time",
+    sortable: true,
+    icon: "timer",
+    dataView: "time",
   },
   {
     label: "Количество мест",
     prop: "count",
+    sortable: true,
+    dataView: "count",
   },
 ];
 const getGroups = async () => {

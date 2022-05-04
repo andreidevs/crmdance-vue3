@@ -54,15 +54,18 @@ export const useUserStore = defineStore("userStore", {
     async loginUser({ email, password }) {
       this.loadingUser = true;
       try {
-        const { user } = await signInWithEmailAndPassword(
+        const { user, error } = await signInWithEmailAndPassword(
           auth,
           email,
           password
         );
+        console.log("eeror", error)
+        if (error) throw error
         this.userData = { email: user.email, uid: user.uid, name: user.displayName };
-        // router.push("/");
+        router.push("/");
+        ElMessage.success("Успешный вход в систему");
       } catch (error) {
-        ElMessage.error("Ошибка");
+        ElMessage.error("Ошибка", error.error_description);
         console.log(error);
       } finally {
         this.loadingUser = false;

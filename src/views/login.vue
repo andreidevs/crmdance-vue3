@@ -73,12 +73,6 @@ const login = async (form) => {
   await form.validate(async (valid, fields) => {
     if (valid) {
       await userStore.login(model);
-      ElMessage.success("Успешный вход в систему");
-      ElNotification({
-        title: "Усшено",
-        message: "Вы вошли в систему",
-        type: "success",
-      });
     } else {
       ElMessage.error("Проверьте правильность ввденных данных");
     }

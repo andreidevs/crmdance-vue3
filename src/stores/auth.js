@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { supabase } from '@/supabase';
-
+import { getById } from '../apis';
+import { ElMessage } from "element-plus";
 
 export const useAuthStore = defineStore('auth',
   {
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore('auth',
     actions: {
       loadUser() {
         this.currentUser = supabase.auth.user();
+        this.getUserData()
       },
       clearUser() {
         this.currentUser = null;
@@ -47,12 +49,17 @@ export const useAuthStore = defineStore('auth',
 
 
       async login(values) {
-        const { user, session, error } = supabase.auth.signIn(values)
-        if (error) {
-          throw new Error(response.error.message);
+        try {
+          const { user, session, error } = await supabase.auth.signIn(values)
+          if (error) throw error
+          this.currentUser = user
+          ElMessage.success("Успешный вход в систему");
+          return user
+        } catch (error) {
+          ElMessage.error(`Ошибка, ${error?.message} `);
+          console.log(error);
         }
-        this.currentUser = user
-        return user
+
       },
 
       async logout() {
@@ -69,6 +76,17 @@ export const useAuthStore = defineStore('auth',
 
       resetPassword(email) {
         return supabase.auth.api.resetPasswordForEmail(email);
+      },
+
+      async getUserData() {
+        const data = await getById({
+          tableName: 'users',
+          id: this.currentUser.id,
+          select: "*, roles(*)"
+        })
+
+        Object.assign(this.currentUser, data)
+
       }
     }
   }

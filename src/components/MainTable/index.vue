@@ -10,11 +10,30 @@
       :width="item.width ? item.width : ''"
     >
       <template v-if="!item.type" #default="scope">
-        <div class="flex items-center">
-          <el-icon v-if="item.icon">
+        <div v-if="!item.widget" class="flex items-center">
+          <!-- <el-icon v-if="item.icon">
             <component :is="getIconComponent(item.icon)"
-          /></el-icon>
-          <span>{{ scope.row[item.dataView] }}</span>
+          /></el-icon> -->
+          <span v-if="!item.childView">{{ scope.row[item.dataView] }}</span>
+          <span v-else>{{ scope.row[item.dataView][item.childView] }}</span>
+        </div>
+
+        <div v-if="item.widget?.name === 'tags'">
+          <el-tag
+            style="margin-left: 5px"
+            v-for="(el, index) in scope.row[item.dataView]"
+            :key="index"
+            :effect="item.widget.effect || 'plain'"
+            :type="
+              item.widget.colors
+                ? arrayRandElement(item.widget.colors)
+                : item.widget.color
+                ? item.widget.color
+                : ''
+            "
+            disable-transitions
+            >{{ el }}</el-tag
+          >
         </div>
       </template>
     </el-table-column>
@@ -32,7 +51,7 @@
 <script setup async>
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import { toRefs, onMounted, ref, computed } from "vue";
-
+import { arrayRandElement } from "../../utils";
 const props = defineProps({
   columns: Array,
   data: Object,
@@ -40,27 +59,27 @@ const props = defineProps({
   nextData: Function,
   prevData: Function,
 });
-const loading = ref(false);
-const getIconComponent = (name) => {
-  return () => import(`../../../node_modules/element-plus/icons-vue/dist/es/${name}.mjs`);
-};
+let loading = $ref(false);
+// const getIconComponent = (name) => {
+//   return () => import(`../../../node_modules/element-plus/icons-vue/dist/es/${name}.mjs`);
+// };
 
 const next = async () => {
-  loading.value = true;
+  loading = true;
   await props.nextData();
-  loading.value = false;
+  loading = false;
 };
 
 const prev = async () => {
-  loading.value = true;
+  loading = true;
   await props.prevData();
-  loading.value = false;
+  loading = false;
 };
 
 onMounted(async () => {
-  loading.value = true;
+  loading = true;
   await props.getData();
-  loading.value = false;
+  loading = false;
 });
 </script>
 

@@ -1,6 +1,9 @@
 // :root {
 //   --el-color-primary: red;
 // }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",

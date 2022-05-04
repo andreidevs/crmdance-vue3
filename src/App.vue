@@ -12,16 +12,18 @@ import { useRouter } from "vue-router";
 
 import { supabase } from "@/supabase";
 import { useAuthStore } from "@/stores/auth";
+import { useRoomStore } from "@/stores/room";
 const locale = ru;
 const router = useRouter();
 const authStore = useAuthStore();
+const roomStore = useRoomStore();
 
 authStore.loadUser();
 
 supabase.auth.onAuthStateChange((event) => {
   if (event === "SIGNED_IN") {
-    authStore.loadUser();
     authStore.loadRedirectRoute();
+    roomStore.getRoomList();
   } else if (event === "SIGNED_OUT") {
     authStore.clearUser();
   }

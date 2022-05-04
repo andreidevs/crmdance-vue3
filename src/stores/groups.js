@@ -1,6 +1,6 @@
 
 import { defineStore } from "pinia";
-import { getById, getTable, addData } from '../apis'
+import { getById, getTable, getTableTest, addData } from '../apis'
 const N = "groups"
 
 export const useGroupsStore = defineStore("groupsStore", {
@@ -18,7 +18,13 @@ export const useGroupsStore = defineStore("groupsStore", {
     },
 
     async getGroups() {
-      return await getTable({ tableName: N, select: "*, coach(*), type(*)", pagination: true, page: this.page })
+      return await getTableTest({
+        tableName: N,
+        select: "*, coach(*), type(*), room(*)",
+        key: N,
+        pagination: true,
+        page: this.page
+      })
     },
 
     async getGroupById(id) {

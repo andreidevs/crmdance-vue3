@@ -41,6 +41,16 @@
         />
       </el-form-item>
 
+      <el-form-item label="Зал">
+        <el-select v-model="form.room" clearable class="m-2" placeholder="Зал">
+          <el-option
+            v-for="item in roomStore.listRoom"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="Тренер">
         <el-select v-model="form.coach" clearable class="m-2" placeholder="Тренер">
           <el-option
@@ -71,7 +81,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="createGroup">Создать</el-button>
+        <el-button v-loading="loading" @click="createGroup">Создать</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -80,6 +90,7 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { useGroupsStore } from "../../stores/groups";
+import { useRoomStore } from "../../stores/room";
 
 const form = reactive({
   coach: "",
@@ -87,20 +98,25 @@ const form = reactive({
   title: "",
   time: "07:00",
   type: "",
+  room: "",
   weekdays: [],
 });
 const groupStore = useGroupsStore();
-const typeOptions = ref([]);
-const coachList = ref([]);
-const weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
+const roomStore = useRoomStore();
+let typeOptions = $ref([]);
+let coachList = $ref([]);
+let weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
+let loading = $ref(false);
 
 onMounted(async () => {
-  typeOptions.value = (await groupStore.getGroupTypes()).data;
-  coachList.value = (await groupStore.getCoachList()).data;
+  typeOptions = (await groupStore.getGroupTypes()).data;
+  coachList = (await groupStore.getCoachList()).data;
 });
 
-const createGroup = () => {
-  groupStore.createGroup(form);
+const createGroup = async () => {
+  loading = true;
+  await groupStore.createGroup(form);
+  loading = false;
 };
 </script>
 

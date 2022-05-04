@@ -15,16 +15,23 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTag: typeof import('element-plus/es')['ElTag']
     IconCommunity: typeof import('./components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./components/icons/IconTooling.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
+    MainFilter: typeof import('./components/MainFilter/index.vue')['default']
     MainTable: typeof import('./components/MainTable/index.vue')['default']
+    Search: typeof import('./components/MainFilter/widgets/Search.vue')['default']
+    Select: typeof import('./components/MainFilter/widgets/Select.vue')['default']
     Sidebar: typeof import('./components/sidebar/index.vue')['default']
+    WidgetSwitch: typeof import('./components/MainFilter/widgets/WidgetSwitch.vue')['default']
   }
 }
 

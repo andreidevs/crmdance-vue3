@@ -5,3 +5,8 @@ export const getPagination = (page, size) => {
 
   return { from, to }
 }
+
+export const arrayRandElement = (arr) => {
+  var rand = Math.floor(Math.random() * arr.length);
+  return arr[rand];
+}

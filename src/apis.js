@@ -3,9 +3,9 @@
 import { ElMessage } from "element-plus";
 import { supabase } from "@/supabase";
 import { getPagination } from "./utils";
+import { useFiltersStore } from './stores/filters';
 
-
-export const addData = async ({ tableName = null, data: addData = null, messageSuccess = "Успешно добавлено", }) => {
+export const addData = async ({ tableName = null, data: addData = null, manyTo = null, messageSuccess = "Успешно добавлено", }) => {
   try {
     if (!tableName) {
       ElMessage.error("Добавьте название коллекции (collectionName)!");
@@ -20,6 +20,14 @@ export const addData = async ({ tableName = null, data: addData = null, messageS
       .from(tableName)
       .insert(addData, { upsert: true })
 
+    if (manyTo) {
+      const { error } = await supabase
+        .from(manyTo.tableName)
+        .insert(manyTo.data)
+
+      if (error) throw error
+    }
+
     if (error) throw error
 
     ElMessage.success(messageSuccess);
@@ -32,7 +40,7 @@ export const addData = async ({ tableName = null, data: addData = null, messageS
 }
 
 
-export const getById = async ({ tableName = null, id = null }) => {
+export const getById = async ({ tableName = null, id = null, select = "*", }) => {
   try {
     if (!tableName) {
       ElMessage.error("Добавьте название коллекции (tableName)!");
@@ -43,24 +51,25 @@ export const getById = async ({ tableName = null, id = null }) => {
       ElMessage.error("ID не может быть пустым!");
       return
     }
-    const { from, to } = getPagination(page, 10);
+
     const { data, error } = await supabase
       .from(tableName)
-      .select('*, coach(*), type(*) ')
+      .select(select)
+      .eq('id', id)
 
-      .range(from, to);
 
-    console.log("getById", data)
+    // console.log("getById", data)
 
     if (error) throw error
-    return data
+    return data[0]
 
   }
   catch (error) {
     ElMessage.error(`ОШИБКА!! ${error.message}`);
   }
 }
-export const getTable = async ({ tableName = null, select = "*", pagination = false, page = 1, size = 10 }) => {
+
+export const getTable = async ({ tableName = null, select = "*", key = null, pagination = false, page = 1, size = 10 }) => {
   try {
     if (!tableName) {
       ElMessage.error("Добавьте название коллекции (tableName)!");
@@ -71,26 +80,36 @@ export const getTable = async ({ tableName = null, select = "*", pagination = fa
       return
     }
 
+    let query = await supabase
+      .from(tableName)
+      .select(select, { count: "exact" })
+      .order("id", { ascending: true })
+
+
+
+
     if (pagination) {
 
       const { from, to } = getPagination(page - 1, size);
 
-      const { data, error, count } = await supabase.from(tableName)
-        .select(select, { count: "exact" })
-        .order("id", { ascending: true })
-        .range(from, to);
+      query.range = from, to;
 
-      const pages = (count + size - 1) / size;
-      const next = pages !== page
+      const { data, error, count } = await query
+      // .filter('groupTypes', 'in', 2)
+      // .filter('room', 'in', "1")
+
+
+
+      const pages = Math.floor((count + size - 1) / size);
+
+      const next = pages > page
       const prev = page !== 1
       if (error) throw error
 
       return { data, count, next, prev }
 
     } else {
-      const { data, error, count } = await supabase.from(tableName)
-        .select(select, { count: "exact" })
-        .order("id", { ascending: true })
+      const { data, error, count } = await query
       if (error) throw error
       return { data, count }
     }
@@ -98,86 +117,76 @@ export const getTable = async ({ tableName = null, select = "*", pagination = fa
   catch (error) {
     ElMessage.error(`ОШИБКА!! ${error.message}`);
   }
+}
+
+export const getTableTest = async ({ tableName = null, select = "*", key = null, pagination = false, page = 1, size = 10 }) => {
+  try {
+    if (!tableName) {
+      ElMessage.error("Добавьте название коллекции (tableName)!");
+      return
+    }
+    if (page === 0) {
+      ElMessage.error("Page не может быть 0!");
+      return
+    }
+
+    // let query = await supabase
+    //   .from(tableName)
+    //   .select(select, { count: "exact" })
+    //   .in('type', 1)
+    // .filter('type', 'in', 1)
+
+    // .order("id", { ascending: true })
+    // .or('id.in.(1,2,3), i')
+
+
+
+
+
+    const { from, to } = getPagination(page - 1, size);
+
+
+
+    const { data, error, count } = await supabase
+      .from(tableName)
+      .select(select, { count: "exact" })
+    // .in('type', 1, { inner: true })
+    // .range(from, to)
+    // .filter('room.id', 'in', 1,)
+    // .filter('groupTypes', 'in', 2)
+    // .filter('room', 'in', "1")
+
+
+
+    const pages = Math.floor((count + size - 1) / size);
+
+    const next = pages > page
+    const prev = page !== 1
+    if (error) throw error
+
+    return { data, count, next, prev }
+
+
+  }
+  catch (error) {
+    console.error(error)
+    ElMessage.error(`ОШИБКА!! ${error.message}`);
+  }
 
 }
 
-// export const getDocs = async (collectionName = null, where = null) => {
-//   try {
-//     if (!collectionName) {
-//       ElMessage.error("Добавьте название коллекции (collectionName)!");
-//       return
-//     }
-//     if (where && where.length < 3) {
-//       ElMessage.error("WHERE должен быть массивом из 3 элементов!");
-//       return
-//     }
-
-//     const dbRef = collection(db, collectionName)
-//     let q = dbRef
-
-//     if (where)
-//       q = query(dbRef, where(where[0], where[1], where[2]));
-
-//     const querySnapshot = await getDocs(q);
-//     querySnapshot.forEach((doc) => {
-//       return doc.data()
-//     });
-
-
-//   } catch (error) {
-//     console.error(error, `Коллекция: ${collectionName}, Where: ${where}`);
-//     ElMessage.error("Ошибка получения");
-//   }
-// }
-
-// export const getDocsPaginate =
-//   async (collectionName = null, pageSize = 20, prev = null, next = null, order = 'created', where = null,) => {
-//     try {
-
-//       if (!collectionName) {
-//         ElMessage.error("Добавьте название коллекции (collectionName)!");
-//         return
-//       }
-//       if (!order) {
-//         ElMessage.error("Сортируемое поля обязательно (order)!");
-//         return
-//       }
-//       if (where && where.length < 3) {
-//         ElMessage.error("WHERE должен быть массивом из 3 элементов!");
-//         return
-//       }
-
-//       const ref = collection(db, collectionName);
-
-//       let q
-
-//       if (!next && !prev)
-//         q = query(ref, orderBy(order), limit(pageSize));
-
-//       if (next) q = query(ref, orderBy(order), startAfter(next[order]), limit(pageSize))
-
-//       if (prev) q = query(ref, orderBy(order), endBefore(prev[order]), limit(pageSize))
 
 
 
+const getFilters = (key, query) => {
+  const filterStore = useFiltersStore()
+  if (key) {
+    filterStore.filters.forEach(el => {
+      if (el.type === "Select") {
+        query
+      }
+    });
+  } else return query
 
-//       const documentSnapshots = await getDocs(q);
-
-//       let res = []
-
-//       documentSnapshots.forEach(async (doc) => {
-
-//         res.push(doc.data())
-//       });
-
-//       return res
-
-
-
-//     } catch (error) {
-//       console.error(error, `Коллекция: ${collectionName}, Where: ${where}`);
-//       ElMessage.error("Ошибка получения");
-//     }
-//   }
-
+}
 

@@ -1,6 +1,10 @@
 <template>
-  <el-button @click="pushRoute('register')">Регистрация</el-button>
-  <el-button @click="pushRoute('login')">Вход</el-button>
+  <el-button @click="pushRoute('register')">
+    Регистрация
+  </el-button>
+  <el-button @click="pushRoute('login')">
+    Вход
+  </el-button>
 </template>
 
 <script setup>

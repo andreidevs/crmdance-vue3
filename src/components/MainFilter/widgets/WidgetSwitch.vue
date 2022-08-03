@@ -1,9 +1,12 @@
 <template>
-  <component :is="componentSwitch" :item="item" />
+  <component
+    :is="componentSwitch"
+    :item="item"
+  />
 </template>
 
 <script setup>
-import { computed, ref, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 
 const { item } = defineProps({ item: Object });
 

@@ -3,21 +3,24 @@
     <el-card label-width="140px">
       <h2>Авторизация</h2>
       <el-form
+        ref="form"
         class="login-form"
         :model="model"
         :rules="rules"
-        ref="form"
         @submit.prevent="login(form)"
       >
         <el-form-item prop="email">
-          <el-input v-model="model.email" placeholder="Email"></el-input>
+          <el-input
+            v-model="model.email"
+            placeholder="Email"
+          />
         </el-form-item>
         <el-form-item prop="password">
           <el-input
             v-model="model.password"
             placeholder="Пароль"
             type="password"
-          ></el-input>
+          />
         </el-form-item>
 
         <el-form-item>
@@ -27,8 +30,9 @@
             type="primary"
             native-type="submit"
             block
-            >Войти</el-button
           >
+            Войти
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>

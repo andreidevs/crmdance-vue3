@@ -1,12 +1,14 @@
 <template>
   <el-aside>
     <div class="app-layout">
-      <sidebar /></div
-  ></el-aside>
+      <sidebar />
+    </div>
+  </el-aside>
   <el-container>
     <div class="content_wrapper">
-      <router-view /></div
-  ></el-container>
+      <router-view />
+    </div>
+  </el-container>
 </template>
 
 <script setup>

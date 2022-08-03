@@ -3,6 +3,8 @@
     v-model="value"
     :placeholder="widget.placeholder"
     :loading="loading"
+    clearable
+    :multiple="item.widget.multi"
     @visible-change="openSelect($event, widget)"
     @change="changeValue(item)"
   >
@@ -16,17 +18,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
 import { getTable } from "../../../apis";
 import { useFiltersStore } from "../../../stores/filters";
 
-const { item } = defineProps({ item: Object });
+const {item} = defineProps({ item: Object });
 
 let widget = $ref(item.widget);
 let value = $ref();
 let loading = $ref(false);
 let filterStore = useFiltersStore();
-let key = item.key;
+
 
 const openSelect = async (status, widget) => {
   if (status && !widget.options?.length) {
@@ -37,7 +38,11 @@ const openSelect = async (status, widget) => {
   }
 };
 
-const changeValue = async (event) => {
-  filterStore.filters[key].push({ name: item.prop, type: widget.type, value });
+const changeValue = async () => {
+  if(value.length) {
+    filterStore.setFiltersValue({ key: item.key, name: item.prop, type: widget.type, value, })
+  } else {
+    filterStore.removeFiltersValue({key: item.key, name: item.prop})
+  }
 };
 </script>

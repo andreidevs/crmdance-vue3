@@ -82,7 +82,7 @@ export const useAuthStore = defineStore('auth',
         const data = await getById({
           tableName: 'users',
           id: this.currentUser.id,
-          select: "*, roles(*)"
+          select: "*"
         })
 
         Object.assign(this.currentUser, data)

@@ -1,6 +1,5 @@
 <template>
-  <el-button @click="pushRoute('add')"></el-button>
-
+  <el-button @click="pushRoute('add')" />
 </template>
 
 <script setup>

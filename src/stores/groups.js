@@ -1,46 +1,41 @@
-
 import { defineStore } from "pinia";
-import { getById, getTable, getTableTest, addData } from '../apis'
-const N = "groups"
+import { getById, getTable, addData } from "../apis";
+const N = "groups";
 
 export const useGroupsStore = defineStore("groupsStore", {
-  id: 'groups',
+  id: "groups",
   state: () => ({
     groupsList: [],
     last: {},
     first: {},
-    page: 1
+    page: 1,
   }),
 
   actions: {
     async createGroup(data) {
-      return await addData({ tableName: N, data, })
+      return await addData({ tableName: N, data });
     },
 
     async getGroups() {
-      return await getTableTest({
+      return await getTable({
         tableName: N,
         select: "*, coach(*), type(*), room(*)",
         key: N,
         pagination: true,
-        page: this.page
-      })
+        page: this.page,
+      });
     },
 
     async getGroupById(id) {
-      return await getById({ tableNAme: N, id })
+      return await getById({ tableNAme: N, id });
     },
 
     async getCoachList() {
-      return getTable({ tableName: "users" })
+      return await getTable({ tableName: "users" });
     },
 
     async getGroupTypes() {
-      return getTable({ tableName: "groupTypes" })
-    }
-
-
-
-
+      return await getTable({ tableName: "groupTypes" });
+    },
   },
 });

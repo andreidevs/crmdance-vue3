@@ -1,15 +1,20 @@
 <template>
   <div class="m-4">
-    <el-button type="success" plain @click="$router.push({ name: 'groups_create' })"
-      >Создать</el-button
+    <el-button
+      type="success"
+      plain
+      @click="$router.push({ name: 'groups_create' })"
     >
-    <MainFilter :columns="filterColumns" @update="getGroups" />
+      Создать
+    </el-button>
+    <MainFilter
+      :columns="filterColumns"
+      @update="getGroups"
+    />
     <MainTable
       :columns="tableColumns"
       :data="groupsData"
-      :getData="getGroups"
-      :nextData="getNextGroup"
-      :prevData="getPrevGroup"
+      :get-data="getGroups"
     />
   </div>
 </template>
@@ -99,6 +104,7 @@ const filterColumns = [
       options: filterOptions["groupTypes"],
       view: "title",
       value: "id",
+      multi: true,
       placeholder: "Тип тренировки",
       endpoint: { tableName: "groupTypes" },
     },
@@ -106,32 +112,28 @@ const filterColumns = [
   },
   {
     key: "groups",
-    title: "Название",
+    title: "Название группы",
     widget: {
-      type: "Search",
-      options: filterOptions["groupTypes"],
+      type: "Input",
       view: "title",
-      value: "id",
-      placeholder: "Тип тренировки",
-      endpoint: { tableName: "groupTypes" },
+      placeholder: "Название группы",
     },
-    prop: "groupTypes",
+    prop: "title",
   },
 ];
 
-const getGroups = async () => {
-  groupStore.page = 1;
+const getGroups = async (page) => {
+  if(page === 'next') {
+    groupStore.page += 1;
+  }else if(page === 'prev'){
+    groupStore.page -= 1;
+  } else {
+    groupStore.page = 1;
+  }
   groupsData = await groupStore.getGroups();
 };
 
-const getNextGroup = async () => {
-  groupStore.page += 1;
-  groupsData = await groupStore.getGroups();
-};
-const getPrevGroup = async () => {
-  groupStore.page -= 1;
-  groupsData = await groupStore.getGroups();
-};
+
 </script>
 
 <style></style>

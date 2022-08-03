@@ -1,8 +1,9 @@
 <template>
   <el-config-provider :locale="locale">
     <div id="app">
-      <router-view></router-view></div
-  ></el-config-provider>
+      <router-view />
+    </div>
+  </el-config-provider>
 </template>
 
 <script setup>
@@ -13,12 +14,16 @@ import { useRouter } from "vue-router";
 import { supabase } from "@/supabase";
 import { useAuthStore } from "@/stores/auth";
 import { useRoomStore } from "@/stores/room";
+import { onBeforeMount } from "vue";
 const locale = ru;
 const router = useRouter();
 const authStore = useAuthStore();
 const roomStore = useRoomStore();
 
-authStore.loadUser();
+onBeforeMount(()=>{
+  authStore.loadUser();
+})
+
 
 supabase.auth.onAuthStateChange((event) => {
   if (event === "SIGNED_IN") {

@@ -3,27 +3,38 @@
     <el-card label-width="140px">
       <h2>Регистрация</h2>
       <el-form
+        ref="form"
         class="login-form"
         :model="model"
         :rules="rules"
-        ref="form"
         @submit.prevent="register(form)"
       >
         <el-form-item prop="email">
-          <el-input v-model="model.email" placeholder="Email"></el-input>
+          <el-input
+            v-model="model.email"
+            placeholder="Email"
+          />
         </el-form-item>
         <el-form-item prop="password">
           <el-input
             v-model="model.password"
             placeholder="Пароль"
             type="password"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item prop="name">
-          <el-input v-model="model.name" placeholder="Фио" clearable></el-input>
+          <el-input
+            v-model="model.name"
+            placeholder="Фио"
+            clearable
+          />
         </el-form-item>
         <el-form-item prop="phone">
-          <el-input v-model="model.phone" placeholder="Телефон" clearable></el-input>
+          <el-input
+            v-model="model.phone"
+            placeholder="Телефон"
+            clearable
+          />
         </el-form-item>
         <el-form-item>
           <el-button
@@ -32,8 +43,9 @@
             type="primary"
             native-type="submit"
             block
-            >Зарегистрироваться</el-button
           >
+            Зарегистрироваться
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>

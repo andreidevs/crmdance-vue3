@@ -1,7 +1,12 @@
 <template>
   <el-button-group class="ml-4">
-    <el-button type="primary" plain v-for="(item, index) in items" :key="index"
-      >{{ item }}
+    <el-button
+      v-for="(item, index) in items"
+      :key="index"
+      type="primary"
+      plain
+    >
+      {{ item }}
     </el-button>
   </el-button-group>
 </template>

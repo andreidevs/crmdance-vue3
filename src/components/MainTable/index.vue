@@ -1,5 +1,11 @@
 <template>
-  <el-table v-loading="loading" :data="data.data" stripe lazy style="width: 100%">
+  <el-table
+    v-loading="loading"
+    :data="data.data"
+    stripe
+    lazy
+    style="width: 100%"
+  >
     <el-table-column
       v-for="(item, index) in columns"
       :key="index"
@@ -9,8 +15,14 @@
       :type="item.type || ''"
       :width="item.width ? item.width : ''"
     >
-      <template v-if="!item.type" #default="scope">
-        <div v-if="!item.widget" class="flex items-center">
+      <template
+        v-if="!item.type"
+        #default="scope"
+      >
+        <div
+          v-if="!item.widget"
+          class="flex items-center"
+        >
           <!-- <el-icon v-if="item.icon">
             <component :is="getIconComponent(item.icon)"
           /></el-icon> -->
@@ -20,30 +32,42 @@
 
         <div v-if="item.widget?.name === 'tags'">
           <el-tag
-            style="margin-left: 5px"
             v-for="(el, index) in scope.row[item.dataView]"
             :key="index"
+            style="margin-left: 5px"
             :effect="item.widget.effect || 'plain'"
             :type="
               item.widget.colors
                 ? arrayRandElement(item.widget.colors)
                 : item.widget.color
-                ? item.widget.color
-                : ''
+                  ? item.widget.color
+                  : ''
             "
             disable-transitions
-            >{{ el }}</el-tag
           >
+            {{ el }}
+          </el-tag>
         </div>
       </template>
     </el-table-column>
   </el-table>
   <el-button-group>
-    <el-button :disabled="!data.prev" @click="prev" type="primary" :icon="ArrowLeft"
-      >Предыдущая страница</el-button
+    <el-button
+      :disabled="!data.prev"
+      type="primary"
+      :icon="ArrowLeft"
+      @click="prev"
     >
-    <el-button :disabled="!data.next" @click="next" type="primary">
-      Следующаяя страница <el-icon class="el-icon--right"><ArrowRight /></el-icon>
+      Предыдущая страница
+    </el-button>
+    <el-button
+      :disabled="!data.next"
+      type="primary"
+      @click="next"
+    >
+      Следующаяя страница <el-icon class="el-icon--right">
+        <ArrowRight />
+      </el-icon>
     </el-button>
   </el-button-group>
 </template>
@@ -56,8 +80,6 @@ const props = defineProps({
   columns: Array,
   data: Object,
   getData: Function,
-  nextData: Function,
-  prevData: Function,
 });
 let loading = $ref(false);
 // const getIconComponent = (name) => {
@@ -66,13 +88,13 @@ let loading = $ref(false);
 
 const next = async () => {
   loading = true;
-  await props.nextData();
+  await props.getData('next');
   loading = false;
 };
 
 const prev = async () => {
   loading = true;
-  await props.prevData();
+  await props.getData('prev');
   loading = false;
 };
 

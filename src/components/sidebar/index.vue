@@ -1,12 +1,17 @@
 <template>
-  <el-menu default-active="1" class="" router>
+  <el-menu
+    default-active="1"
+    class=""
+    router
+  >
     <el-menu-item
-      :route="{ name: item.routeName }"
       v-for="(item, index) in menuItems"
       :key="index"
+      :route="{ name: item.routeName }"
       :index="item.name"
-      >{{ item.name }}</el-menu-item
     >
+      {{ item.name }}
+    </el-menu-item>
   </el-menu>
 </template>
 

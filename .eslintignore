@@ -1,0 +1,7 @@
+/dist
+/deployments
+/node_modules
+.eslintrc.js
+babel.config.js
+jsconfig.json
+package.json

@@ -20,12 +20,12 @@
 <script setup>
 import { getTable } from "../../../apis";
 import { useFiltersStore } from "../../../stores/filters";
-
+import {ref} from "vue"
 const {item} = defineProps({ item: Object });
 
-let widget = $ref(item.widget);
-let value = $ref();
-let loading = $ref(false);
+let widget = ref(item.widget);
+let value = ref();
+let loading = ref(false);
 let filterStore = useFiltersStore();
 
 
@@ -39,8 +39,8 @@ const openSelect = async (status, widget) => {
 };
 
 const changeValue = async () => {
-  if(value.length) {
-    filterStore.setFiltersValue({ key: item.key, name: item.prop, type: widget.type, value, })
+  if(value.value.length) {
+    filterStore.setFiltersValue({ key: item.key, name: item.prop, type: widget.value.type, value, })
   } else {
     filterStore.removeFiltersValue({key: item.key, name: item.prop})
   }

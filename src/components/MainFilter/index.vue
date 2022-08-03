@@ -14,20 +14,20 @@
       />
     </div>
   </div>
-
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
 import { useFiltersStore } from "../../stores/filters";
-import WidgetSwitch from "./widgets/WidgetSwitch"
+import WidgetSwitch from "./widgets/WidgetSwitch";
+import { ref } from "vue";
+
 const emit = defineEmits(["update"]);
 const props = defineProps({ columns: Array });
 
-let columnsData = $ref(props.columns);
+let columnsData = ref(props.columns);
 let filterStore = useFiltersStore();
 
-filterStore.$subscribe((mutation, state) => {
+filterStore.$subscribe(() => {
   emit("update");
 })
 

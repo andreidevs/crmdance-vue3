@@ -5,24 +5,24 @@
     :loading="loading"
     clearable
     @input="changeValue(item)"
-  >
-  </el-input>
+  />
 </template>
 
 <script setup>
 import { useFiltersStore } from "../../../stores/filters";
 import debounce from 'lodash.debounce'
+import {ref} from "vue"
 const props = defineProps({ item: Object });
 
-let widget = $ref(props.item.widget);
-let value = $ref();
-let loading = $ref(false);
+let widget = ref(props.item.widget);
+let value = ref();
+let loading = ref(false);
 let filterStore = useFiltersStore();
 
 
 const changeValue = debounce(() => {
-  if(value) {
-    filterStore.setFiltersValue({ key: props.item.key, name: props.item.prop, type: widget.type, value,   })
+  if(value.value) {
+    filterStore.setFiltersValue({ key: props.item.key, name: props.item.prop, type: widget.value.type, value,   })
   } else {
     filterStore.removeFiltersValue({key: props.item.key, name: props.item.prop})
   }

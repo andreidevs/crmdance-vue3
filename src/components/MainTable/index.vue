@@ -26,8 +26,8 @@
           <!-- <el-icon v-if="item.icon">
             <component :is="getIconComponent(item.icon)"
           /></el-icon> -->
-          <span v-if="!item.childView">{{ scope.row[item.dataView] }}</span>
-          <span v-else>{{ scope.row[item.dataView][item.childView] }}</span>
+          <span v-if="!item.childView">{{ scope.row[item.dataView] ? getViewFromFilter(scope.row[item.dataView], item ) : '-' }}</span>
+          <span v-else>{{ scope.row[item.dataView] ? getViewFromFilter(scope.row[item.dataView][item.childView], item) : '-' }}</span>
         </div>
 
         <WidgetSwitch
@@ -35,8 +35,8 @@
           :key="index"
           :item="item"
           :elements="scope.row[item.dataView]"
+          :scope="scope.row"
         />
-
       </template>
     </el-table-column>
   </el-table>
@@ -63,34 +63,37 @@
 
 <script setup async>
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
-import { toRefs, onMounted, ref, computed } from "vue";
-import WidgetSwitch from "./widgets/WidgetSwitch"
+import { onMounted, ref } from "vue";
+import WidgetSwitch from "./widgets/WidgetSwitch";
+import { getViewFromFilter } from "./utils/viewFilters";
+
 const props = defineProps({
   columns: Array,
   data: Object,
   getData: Function,
 });
-let loading = $ref(false);
+let loading = ref(false);
 // const getIconComponent = (name) => {
 //   return () => import(`../../../node_modules/element-plus/icons-vue/dist/es/${name}.mjs`);
 // };
 
+
 const next = async () => {
-  loading = true;
+  loading.value = true;
   await props.getData('next');
-  loading = false;
+  loading.value = false;
 };
 
 const prev = async () => {
-  loading = true;
+  loading.value = true;
   await props.getData('prev');
-  loading = false;
+  loading.value = false;
 };
 
 onMounted(async () => {
-  loading = true;
+  loading.value = true;
   await props.getData();
-  loading = false;
+  loading.value = false;
 });
 </script>
 

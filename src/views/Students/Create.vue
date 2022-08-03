@@ -125,21 +125,14 @@ const form = reactive({
 });
 const groupStore = useGroupsStore();
 const roomStore = useRoomStore();
-let typeOptions = ref([]);
-let coachList = ref([]);
-let weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
+
 let loading = ref(false);
 
 onMounted(async () => {
-  typeOptions.value = (await groupStore.getGroupTypes()).data;
-  coachList.value = (await groupStore.getCoachList()).data;
+
 });
 
-const createGroup = async () => {
-  loading.value = true;
-  await groupStore.createGroup(form);
-  loading.value = false;
-};
+
 </script>
 
 <style></style>

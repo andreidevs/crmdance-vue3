@@ -1,19 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { authGuard } from '@/guards/auth';
-import AuthLayout from '@/layout/auth-layout.vue'
-import AppLayout from '@/layout/app-layout.vue'
+import { authGuard } from "@/guards/auth";
+import AuthLayout from "@/layout/auth-layout.vue";
+import AppLayout from "@/layout/app-layout.vue";
 
 const routes = [
   {
     path: "/:catchAll(.*)",
-    redirect: { name: 'home' },
+    redirect: { name: "home" },
   },
   {
-    name: 'admin',
-    path: '/admin',
+    name: "admin",
+    path: "/admin",
     component: AppLayout,
     children: [
-
       {
         path: "/",
         name: "home",
@@ -36,12 +35,18 @@ const routes = [
         path: "/students",
         name: "students",
         meta: { authRequired: true },
-        component: () => import("../views/Students.vue"),
+        component: () => import("../views/Students/index.vue"),
       },
-    ]
+      {
+        path: "/students/create",
+        name: "students_create",
+        meta: { authRequired: true },
+        component: () => import("../views/Students/Create.vue"),
+      },
+    ],
   },
   {
-    path: '/auth',
+    path: "/auth",
     component: AuthLayout,
     children: [
       {
@@ -54,9 +59,8 @@ const routes = [
         name: "register",
         component: () => import("../views/Register.vue"),
       },
-    ]
-  }
-
+    ],
+  },
 ];
 
 const router = createRouter({

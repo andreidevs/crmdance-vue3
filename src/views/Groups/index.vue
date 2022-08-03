@@ -23,10 +23,11 @@
 import MainTable from "@/components/MainTable/index.vue";
 import MainFilter from "@/components/MainFilter/index.vue";
 import { useGroupsStore } from "../../stores/groups";
-import { onMounted, reactive, ref } from "vue";
+import { ref } from "vue";
+
 const groupStore = useGroupsStore();
 
-let groupsData = $ref([]);
+let groupsData = ref([]);
 
 let tableColumns = [
   {
@@ -92,7 +93,7 @@ let tableColumns = [
   },
 ];
 
-const filterOptions = $ref({
+const filterOptions = ref({
   groupTypes: [],
 });
 const filterColumns = [
@@ -101,7 +102,7 @@ const filterColumns = [
     key: "groups",
     widget: {
       type: "Select",
-      options: filterOptions["groupTypes"],
+      options: filterOptions.value["groupTypes"],
       view: "title",
       value: "id",
       multi: true,
@@ -130,7 +131,7 @@ const getGroups = async (page) => {
   } else {
     groupStore.page = 1;
   }
-  groupsData = await groupStore.getGroups();
+  groupsData.value = await groupStore.getGroups();
 };
 
 

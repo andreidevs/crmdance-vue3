@@ -124,6 +124,7 @@ export const getTable = async ({
     }
   } catch (error) {
     ElMessage.error(`ОШИБКА!! ${error.message}`);
+    return { data: [] };
   }
 };
 

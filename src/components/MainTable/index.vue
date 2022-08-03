@@ -30,28 +30,17 @@
           <span v-else>{{ scope.row[item.dataView][item.childView] }}</span>
         </div>
 
-        <div v-if="item.widget?.name === 'tags'">
-          <el-tag
-            v-for="(el, index) in scope.row[item.dataView]"
-            :key="index"
-            style="margin-left: 5px"
-            :effect="item.widget.effect || 'plain'"
-            :type="
-              item.widget.colors
-                ? arrayRandElement(item.widget.colors)
-                : item.widget.color
-                  ? item.widget.color
-                  : ''
-            "
-            disable-transitions
-          >
-            {{ el }}
-          </el-tag>
-        </div>
+        <WidgetSwitch
+          v-else
+          :key="index"
+          :item="item"
+          :elements="scope.row[item.dataView]"
+        />
+
       </template>
     </el-table-column>
   </el-table>
-  <el-button-group>
+  <el-button-group class="mt-2">
     <el-button
       :disabled="!data.prev"
       type="primary"
@@ -75,7 +64,7 @@
 <script setup async>
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import { toRefs, onMounted, ref, computed } from "vue";
-import { arrayRandElement } from "../../utils";
+import WidgetSwitch from "./widgets/WidgetSwitch"
 const props = defineProps({
   columns: Array,
   data: Object,

@@ -61,7 +61,7 @@ let tableColumns = [
     dataView: "weekdays",
     width: 150,
     widget: {
-      name: "tags",
+      type: "Tags",
       effect: "dark",
       colors: ["success", "info", "warning"],
     },

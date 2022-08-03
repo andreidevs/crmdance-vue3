@@ -8,12 +8,10 @@
       :key="index"
       class="mx-2 my-2"
     >
-      <!-- ## Select -->
       <WidgetSwitch
         :key="index"
         :item="item"
       />
-      <!-- End Select -->
     </div>
   </div>
 
@@ -22,7 +20,7 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useFiltersStore } from "../../stores/filters";
-
+import WidgetSwitch from "./widgets/WidgetSwitch"
 const emit = defineEmits(["update"]);
 const props = defineProps({ columns: Array });
 
@@ -32,16 +30,6 @@ let filterStore = useFiltersStore();
 filterStore.$subscribe((mutation, state) => {
   emit("update");
 })
-
-// watch(filters, (value) => {
-//   console.log("update", )
-//   emit("update");
-// },
-//   {
-//     immediate: true
-//   }
-// );
-
 
 
 

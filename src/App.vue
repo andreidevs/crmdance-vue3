@@ -10,31 +10,31 @@
 import { ElConfigProvider } from "element-plus";
 import ru from "element-plus/lib/locale/lang/ru";
 import { useRouter } from "vue-router";
-
 import { supabase } from "@/supabase";
-import { useAuthStore } from "@/stores/auth";
 import { useRoomStore } from "@/stores/room";
 import { onBeforeMount } from "vue";
+import { useUserStore } from "./stores/user";
+
 const locale = ru;
 const router = useRouter();
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const roomStore = useRoomStore();
 
 onBeforeMount(()=>{
-  authStore.loadUser();
+  userStore.loadUser();
 })
 
 
 supabase.auth.onAuthStateChange((event) => {
   if (event === "SIGNED_IN") {
-    authStore.loadRedirectRoute();
+    userStore.loadRedirectRoute();
     roomStore.getRoomList();
   } else if (event === "SIGNED_OUT") {
-    authStore.clearUser();
+    userStore.clearUser();
   }
 });
 
-authStore.$onAction(({ name, store, after }) => {
+userStore.$onAction(({ name, store, after }) => {
   if (name === "loadRedirectRoute") {
     after(async () => {
       const redirectRoute = store.redirectRoute;
@@ -42,7 +42,7 @@ authStore.$onAction(({ name, store, after }) => {
       if (redirectRoute) {
         await router.isReady();
         await router.replace(redirectRoute);
-        authStore.clearRedirectRoute();
+        userStore.clearRedirectRoute();
       }
     });
   }

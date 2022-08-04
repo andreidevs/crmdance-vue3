@@ -1,16 +1,12 @@
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from "../stores/user";
 
-export function authGuard(
-  to,
-  from,
-  next,
-) {
-  const authStore = useAuthStore();
+export function authGuard(to, from, next) {
+  const userStore = useUserStore();
 
-  if (!to.meta.authRequired || authStore.isAuthenticated) {
+  if (!to.meta.authRequired || userStore.isAuthenticated) {
     return next();
   } else {
-    authStore.saveRedirectRoute(to);
-    return next({ name: 'login' });
+    userStore.saveRedirectRoute(to);
+    return next({ name: "login" });
   }
 }

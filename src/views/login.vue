@@ -41,7 +41,7 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/user";
 import { ElMessage } from "element-plus";
 
 const userStore = useAuthStore();

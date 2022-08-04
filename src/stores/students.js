@@ -21,9 +21,14 @@ export const useStudentsStore = defineStore("studentsStore", {
       return await getTable({
         tableName: N,
         select: "*, coach(*), type(*), room(*)",
-        key: N,
         pagination: true,
         page: this.page,
+      });
+    },
+
+    async getLessonsTypes() {
+      return await getTable({
+        tableName: "lessonTypes",
       });
     },
 

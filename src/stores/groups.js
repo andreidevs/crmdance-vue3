@@ -27,15 +27,12 @@ export const useGroupsStore = defineStore("groupsStore", {
     },
 
     async getGroupById(id) {
-      return await getById({ tableNAme: N, id });
-    },
-
-    async getCoachList() {
-      return await getTable({ tableName: "users" });
+      return await getById({ tableName: N, id });
     },
 
     async getGroupTypes() {
       return await getTable({ tableName: "groupTypes" });
+      // TODO сделать сохранение в стор что бы не ходить за данными постоянно
     },
   },
 });

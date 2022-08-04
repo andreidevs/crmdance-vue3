@@ -113,6 +113,7 @@
 import { onMounted, reactive, ref } from "vue";
 import { useGroupsStore } from "../../stores/groups";
 import { useRoomStore } from "../../stores/room";
+import { useUserStore } from "../../stores/user";
 
 const form = reactive({
   coach: "",
@@ -125,14 +126,15 @@ const form = reactive({
 });
 const groupStore = useGroupsStore();
 const roomStore = useRoomStore();
+const userStore = useUserStore()
 let typeOptions = ref([]);
 let coachList = ref([]);
 let weekdaysItems = ref(["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]);
 let loading = ref(false);
 
 onMounted(async () => {
-  typeOptions.value = (await groupStore.getGroupTypes()).data;
-  coachList.value = (await groupStore.getCoachList()).data;
+  typeOptions.value = await groupStore.getGroupTypes()
+  coachList.value = await userStore.getCoachList()
 });
 
 const createGroup = async () => {

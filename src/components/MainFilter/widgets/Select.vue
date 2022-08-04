@@ -9,7 +9,7 @@
     @change="changeValue(item)"
   >
     <el-option
-      v-for="el in widget.options"
+      v-for="el in options"
       :key="el[widget.value]"
       :label="el[widget.view]"
       :value="el[widget.value]"
@@ -29,18 +29,17 @@ const props = defineProps({
   }
 });
 
-let widget = ref(props.item.widget);
-let value = ref();
-let loading = ref(false);
-let filterStore = useFiltersStore();
-
+const widget = ref(props.item.widget);
+const value = ref();
+const loading = ref(false);
+const filterStore = useFiltersStore();
+const options = ref([])
 
 const openSelect = async (status, widget) => {
-  if (status && !widget.options?.length) {
-    loading = true;
-    const { data } = await getTable(widget.endpoint);
-    widget.options = data;
-    loading = false;
+  if (status && !options.value?.length) {
+    loading.value = true;
+    options.value = await getTable(widget.endpoint);
+    loading.value = false;
   }
 };
 

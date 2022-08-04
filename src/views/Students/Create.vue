@@ -4,47 +4,48 @@
       :model="form"
       label-width="140px"
     >
-      <el-form-item label="Название группы">
+      <el-form-item label="ФИО">
         <el-input
-          v-model="form.title"
-          placeholder="Оставьте пустым если хотите использовать значение по умолчанию"
-        />
-      </el-form-item>
-      <el-form-item label="Дни недели">
-        <!-- <WeekDaysPicker v-model="form.weekdays" /> -->
-        <el-select
-          v-model="form.weekdays"
-          filterable
-          allow-create
-          default-first-option
-          clearable
-          multiple
-          class="m-2"
-          placeholder="Дни недели"
-        >
-          <el-option
-            v-for="(item, index) in weekdaysItems"
-            :key="index"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Количество мест">
-        <el-input-number
-          v-model="form.count"
-          :min="1"
-          :max="20"
+          v-model="form.name"
+          placeholder="ФИО"
         />
       </el-form-item>
 
-      <el-form-item label="Время начала">
-        <el-time-select
-          v-model="form.time"
-          start="06:00"
-          step="00:10"
-          end="22:00"
-          placeholder="Время тренеровки"
+      <el-form-item label="Телефон">
+        <el-input
+          v-model="form.phone"
+          v-maska="'+7 (###) ### ##-## '"
+          placeholder="Телефон"
+          maxlength="18"
+          clearable
+        />
+      </el-form-item>
+
+      <el-form-item label="Тип занятий">
+        <el-select
+          v-model="form.type"
+          clearable
+          class="m-2"
+          placeholder="Тип занятий"
+          @change="changeLessonType"
+        >
+          <el-option
+            v-for="item in lessonTypes"
+            :key="item.id"
+            :label="item.title"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
+
+        label="Группа"
+      >
+        <SelectDrawer
+          v-model="form.group"
+          title="Выбрать группу"
+          :data-table-options="groupTableOptions"
         />
       </el-form-item>
 
@@ -63,6 +64,7 @@
           />
         </el-select>
       </el-form-item>
+
       <el-form-item label="Тренер">
         <el-select
           v-model="form.coach"
@@ -78,29 +80,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="Тип тренеровки">
-        <el-select
-          v-model="form.type"
-          class="m-2"
-          filterable
-          allow-create
-          clearable
-          default-first-option
-          :reserve-keyword="false"
-          placeholder="Тип тренеровки"
-        >
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.ConvertInvalidComponents"
-            :label="item.title"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
+
       <el-form-item>
         <el-button
           v-loading="loading"
-          @click="createGroup"
+          @click="createStudent"
         >
           Создать
         </el-button>
@@ -110,23 +94,52 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import {  onMounted, reactive, ref } from "vue";
 import { useRoomStore } from "../../stores/room";
+import { useStudentsStore } from "../../stores/students";
+import { useUserStore } from "../../stores/user";
+import {tableColumns, filterColumns} from "../Groups/groupsColumns";
 
 const form = reactive({
   coach: "",
-  count: 10,
   title: "",
-  time: "07:00",
   type: "",
   room: "",
-  weekdays: [],
+  phone: "",
+  group: "",
 });
 const roomStore = useRoomStore();
+const studentsStore = useStudentsStore()
+const userStore = useUserStore()
 
-let loading = ref(false);
+
+const  viewGroup = ref(false)
+const loading = ref(false);
+const lessonTypes = ref([])
+const coachList = ref([]);
+
+
+const changeLessonType = (id) =>{
+  const find = lessonTypes.value.find(el=> el.id === id)
+  if(find?.name === 'group'){
+    viewGroup.value = true
+  } else {  viewGroup.value = false }
+
+}
+
+const groupTableOptions = {
+  tableColumns,
+  filterColumns,
+  tableName: 'groups',
+  select: "*, coach(*), type(*), room(*)"
+}
+
+const createStudent = ()=>{}
+
 
 onMounted(async () => {
+  lessonTypes.value = await studentsStore.getLessonsTypes()
+  coachList.value = await userStore.getCoachList()
 
 });
 

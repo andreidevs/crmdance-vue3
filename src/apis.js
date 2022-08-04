@@ -73,7 +73,6 @@ export const getById = async ({
 export const getTable = async ({
   tableName = null,
   select = "*",
-  // key = null,
   pagination = false,
   page = 1,
   size = 10,
@@ -117,9 +116,9 @@ export const getTable = async ({
       return { data, count, next, prev };
     } else {
       //Данные без пагинации
-      const { data, error, count } = await query;
+      const { data, error } = await query;
       if (error) throw error;
-      return { data, count };
+      return data;
     }
   } catch (error) {
     ElMessage.error(`ОШИБКА!! ${error.message}`);

@@ -27,7 +27,8 @@ const props = defineProps({
 });
 
 const { item, elements } = toRefs(props)
+
 const componentSwitch = computed(() =>
-  defineAsyncComponent(() => import(`./${item.widget.type}.vue`))
+  defineAsyncComponent(() => import(`./${item.value.widget.type}.vue`))
 );
 </script>

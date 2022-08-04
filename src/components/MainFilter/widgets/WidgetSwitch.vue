@@ -1,7 +1,7 @@
 <template>
   <component
     :is="componentSwitch"
-    :item="item"
+    :item="props.item"
   />
 </template>
 

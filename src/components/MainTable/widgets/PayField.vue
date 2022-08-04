@@ -33,14 +33,14 @@ const props = defineProps(
 const { scope, elements: payDate} = toRefs(props)
 
 const getStatus = ()=>{
-  if(payDate) {
-    const current = new Date(payDate)
+  if(payDate.value) {
+    const current = new Date(payDate.value)
     const dd = intervalToDuration({
       start: current,
       end: new Date(),
     },)
 
-    if(dd.days > scope.payPeriod || dd.months >= 1){
+    if(dd.days > scope.value.payPeriod || dd.months >= 1){
       return false
     } else return  true
   }

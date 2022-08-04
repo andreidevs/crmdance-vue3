@@ -22,7 +22,12 @@ import WidgetSwitch from "./widgets/WidgetSwitch";
 import { ref } from "vue";
 
 const emit = defineEmits(["update"]);
-const props = defineProps({ columns: Array });
+const props = defineProps({
+  columns: {
+    type: Array,
+    default: ()=> []
+  }
+});
 
 let columnsData = ref(props.columns);
 let filterStore = useFiltersStore();

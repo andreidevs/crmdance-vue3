@@ -68,9 +68,22 @@ import WidgetSwitch from "./widgets/WidgetSwitch";
 import { getViewFromFilter } from "./utils/viewFilters";
 
 const props = defineProps({
-  columns: Array,
-  data: Object,
-  getData: Function,
+  columns: {
+    type: Array,
+    require: true,
+    default: ()=> []
+  },
+
+  data: {
+    type: Object,
+    require: true,
+    default: ()=> {}
+  },
+  getData: {
+    type: Function,
+    require: true,
+    default: ()=> {}
+  },
 });
 let loading = ref(false);
 // const getIconComponent = (name) => {

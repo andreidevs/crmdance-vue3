@@ -101,7 +101,7 @@ const rules = reactive({
 
 const register = async (form) => {
   if (!form) return;
-  await form.validate(async (valid, fields) => {
+  await form.validate(async (valid) => {
     if (valid) {
       const { email, password, name, phone } = model;
       await userStore.register({ email, password }, { name, phone });

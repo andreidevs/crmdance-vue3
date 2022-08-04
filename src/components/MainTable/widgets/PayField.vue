@@ -11,8 +11,26 @@
 </template>
 <script setup>
 import { intervalToDuration } from "date-fns";
+import { toRefs } from "vue";
 
-const {item, scope, elements: payDate} = defineProps({item: Object, elements: String, scope: Object})
+const props = defineProps(
+  {
+    item: {
+      type: Object,
+      require: true,
+      default: ()=> {}
+    },
+    elements: {
+      type: String,
+      default: ""
+    },
+    scope: {
+      type: Object,
+      require: true,
+      default: ()=> {}
+    }
+  })
+const { scope, elements: payDate} = toRefs(props)
 
 const getStatus = ()=>{
   if(payDate) {

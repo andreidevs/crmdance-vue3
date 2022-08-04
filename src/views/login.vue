@@ -43,7 +43,7 @@
 import { reactive, ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { ElMessage } from "element-plus";
-import { ElNotification } from "element-plus";
+
 const userStore = useAuthStore();
 
 let model = reactive({
@@ -74,7 +74,7 @@ const rules = reactive({
 
 const login = async (form) => {
   if (!form) return;
-  await form.validate(async (valid, fields) => {
+  await form.validate(async (valid) => {
     if (valid) {
       await userStore.login(model);
     } else {

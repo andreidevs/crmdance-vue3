@@ -10,9 +10,15 @@
 
 <script setup>
 import { useFiltersStore } from "../../../stores/filters";
-import debounce from 'lodash.debounce'
-import {ref} from "vue"
-const props = defineProps({ item: Object });
+import debounce from "lodash.debounce";
+import { ref } from "vue";
+
+const props = defineProps(
+  { item: {
+      type: Object,
+      default: ()=> {}
+    }
+  });
 
 let widget = ref(props.item.widget);
 let value = ref();

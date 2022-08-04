@@ -8,9 +8,14 @@
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
 
-const { item } = defineProps({ item: Object });
+const props= defineProps({
+  item: {
+    type: Object,
+    default: ()=> {}
+  }
+});
 
 const componentSwitch = computed(() =>
-  defineAsyncComponent(() => import(`./${item.widget.type}.vue`))
+  defineAsyncComponent(() => import(`./${props.item.widget.type}.vue`))
 );
 </script>

@@ -20,6 +20,18 @@
 </template>
 <script setup>
 import { arrayRandElement } from "@/utils";
+import { toRefs } from "vue";
 
-const {item, elements} = defineProps({item: Object, elements: Array})
+const props = defineProps({
+  item: {
+    type: Object,
+    default: ()=> {}
+  },
+  elements: {
+    type: Array,
+    default: ()=> []
+  }
+})
+
+const {item, elements } = toRefs(props)
 </script>

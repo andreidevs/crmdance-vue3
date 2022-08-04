@@ -111,7 +111,6 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { useGroupsStore } from "../../stores/groups";
 import { useRoomStore } from "../../stores/room";
 
 const form = reactive({
@@ -123,7 +122,6 @@ const form = reactive({
   room: "",
   weekdays: [],
 });
-const groupStore = useGroupsStore();
 const roomStore = useRoomStore();
 
 let loading = ref(false);

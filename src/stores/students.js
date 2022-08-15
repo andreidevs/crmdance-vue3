@@ -13,8 +13,10 @@ export const useStudentsStore = defineStore("studentsStore", {
   }),
 
   actions: {
-    async createGroup(data) {
-      return await addData({ tableName: N, data });
+    async createStudent(data) {
+      const create = await addData({ tableName: N, data });
+
+      return create;
     },
 
     async getStudents() {

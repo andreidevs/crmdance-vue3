@@ -126,41 +126,6 @@ export const getTable = async ({
   }
 };
 
-// export const getTableTest = async ({
-//   tableName = null,
-//   select = "*",
-//   key = null,
-//   pagination = false,
-//   page = 1,
-//   size = 10,
-// }) => {
-//   try {
-//     if (!tableName) {
-//       ElMessage.error("Добавьте название коллекции (tableName)!");
-//       return;
-//     }
-//     if (page === 0) {
-//       ElMessage.error("Page не может быть 0!");
-//       return;
-//     }
-//
-//     const { from, to } = getPagination(page - 1, size);
-//
-//     const { data, error, count } = await query;
-//
-//     const pages = Math.floor((count + size - 1) / size);
-//
-//     const next = pages > page;
-//     const prev = page !== 1;
-//     if (error) throw error;
-//
-//     return { data, count, next, prev };
-//   } catch (error) {
-//     console.error(error);
-//     ElMessage.error(`ОШИБКА!! ${error.message}`);
-//   }
-// };
-
 ////////////////////////////// Helpers
 
 const getFilters = (key) => {

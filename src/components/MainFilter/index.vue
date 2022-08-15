@@ -1,5 +1,5 @@
 <template>
-  <h2 class="mt-4">
+  <h2 v-if="title.length">
     Фильтры
   </h2>
   <div class="flex items-center">
@@ -26,6 +26,10 @@ const props = defineProps({
   columns: {
     type: Array,
     default: ()=> []
+  },
+  title: {
+    type: String,
+    default: ""
   }
 });
 

@@ -2,12 +2,14 @@
   <div class="m-4">
     <el-button
       type="success"
+      class="mb-4"
       plain
       @click="$router.push({ name: 'students_create' })"
     >
       Создать
     </el-button>
     <MainFilter
+      title="Фильтры"
       :columns="filterColumns"
       @update="getStudents"
     />

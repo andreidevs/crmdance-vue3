@@ -83,3 +83,11 @@ export const filterColumns = [
     prop: "title",
   },
 ];
+
+
+
+const a = [1,2,'Basya',4,5]
+
+
+
+a[3]

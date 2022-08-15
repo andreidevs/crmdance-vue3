@@ -4,6 +4,8 @@
     :placeholder="widget.placeholder"
     :loading="loading"
     clearable
+    collapse-tags
+    collapse-tags-tooltip
     :multiple="item.widget.multi"
     @visible-change="openSelect($event, widget)"
     @change="changeValue(item)"

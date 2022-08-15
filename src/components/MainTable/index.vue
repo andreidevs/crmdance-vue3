@@ -4,7 +4,10 @@
     :data="data.data"
     stripe
     lazy
+    :highlight-current-row="selectable && !multipleSelectable"
     style="width: 100%"
+    @selection-change="multipleSelectable && $emit('select', $event)"
+    @current-change="!multipleSelectable && $emit('select', $event)"
   >
     <el-table-column
       v-for="(item, index) in columns"
@@ -13,7 +16,7 @@
       :label="item.label"
       :sortable="item.sortable"
       :type="item.type || ''"
-      :width="item.width ? item.width : ''"
+      :width="item.width || ''"
     >
       <template
         v-if="!item.type"
@@ -84,12 +87,20 @@ const props = defineProps({
     require: true,
     default: ()=> {}
   },
+  selectable: {
+    type: Boolean,
+    default: false
+  },
+  multipleSelectable: {
+    type: Boolean,
+    default: false
+  },
 });
 let loading = ref(false);
 // const getIconComponent = (name) => {
 //   return () => import(`../../../node_modules/element-plus/icons-vue/dist/es/${name}.mjs`);
 // };
-
+defineEmits(['select'])
 
 const next = async () => {
   loading.value = true;
